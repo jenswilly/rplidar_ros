@@ -2101,7 +2101,6 @@ void RPlidarDriverImplCommon::_disableDataGrabbing()
 RPlidarDriverSerial::RPlidarDriverSerial() 
 {
     _chanDev = new SerialChannelDevice();
-    i2c_client_ = nh_.serviceClient<i2c_service::I2CWriteByte>( "/i2c_write_byte_data" );
 }
 
 RPlidarDriverSerial::~RPlidarDriverSerial()
@@ -2151,7 +2150,7 @@ RPlidarDriverUART::RPlidarDriverUART()
     i2c_client_ = nh_.serviceClient<i2c_service::I2CWriteByte>( "/i2c_write_byte_data" );
 }
 
-u_result RPlidarDriverUART::checkMotorCtrlSupport(bool & support, _u32 timeout = DEFAULT_TIMEOUT)
+u_result RPlidarDriverUART::checkMotorCtrlSupport(bool & support, _u32 timeout)
 {
 	// Yes, this version supports motor control
 	support = true;

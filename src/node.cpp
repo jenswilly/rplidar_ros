@@ -206,7 +206,7 @@ int main(int argc, char * argv[]) {
     u_result     op_result;
 
     // create the driver instance
-    drv = RPlidarDriver::CreateDriver(rp::standalone::rplidar::DRIVER_TYPE_SERIALPORT);
+    drv = RPlidarDriver::CreateDriver(rp::standalone::rplidar::DRIVER_TYPE_UART);
     
     if (!drv) {
         ROS_ERROR("Create Driver fail, exit");
