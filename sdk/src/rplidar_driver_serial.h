@@ -34,8 +34,6 @@
 
 #pragma once
 
-#include "ros/ros.h"
-
 namespace rp { namespace standalone{ namespace rplidar {
 
 class SerialChannelDevice :public ChannelDevice
@@ -102,11 +100,6 @@ public:
     virtual ~RPlidarDriverSerial();
     virtual u_result connect(const char * port_path,  _u32 baudrate, _u32 flag = 0);
     virtual void disconnect();
-    virtual u_result setMotorPWM(_u16 pwm);
-
-private:
-	ros::NodeHandle nh_;
-	ros::ServiceClient i2c_client_;
 };
 
 }}}

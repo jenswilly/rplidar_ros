@@ -44,9 +44,9 @@
 #include "rplidar_driver_impl.h"
 #include "rplidar_driver_serial.h"
 #include "rplidar_driver_TCP.h"
+#include "rplidar_driver_uart.h"
 
 #include <algorithm>
-#include <i2c_service/I2CWriteByte.h>
 
 
 #ifndef min
@@ -91,6 +91,8 @@ RPlidarDriver * RPlidarDriver::CreateDriver(_u32 drivertype)
         return new RPlidarDriverSerial();
     case DRIVER_TYPE_TCP:
          return new RPlidarDriverTCP();
+	case DRIVER_TYPE_UART:
+		 return new RPlidarDriverUART();
     default:
         return NULL;
     }
@@ -2141,7 +2143,22 @@ u_result RPlidarDriverSerial::connect(const char * port_path, _u32 baudrate, _u3
     return RESULT_OK;
 }
 
-u_result RPlidarDriverSerial::setMotorPWM(_u16 pwm)
+// -------- RPlidarDriverUART
+
+RPlidarDriverUART::RPlidarDriverUART() 
+{
+	// Initialize I2C service (node handle is initialized by default)
+    i2c_client_ = nh_.serviceClient<i2c_service::I2CWriteByte>( "/i2c_write_byte_data" );
+}
+
+u_result RPlidarDriverUART::checkMotorCtrlSupport(bool & support, _u32 timeout = DEFAULT_TIMEOUT)
+{
+	// Yes, this version supports motor control
+	support = true;
+	return RESULT_OK;
+}
+
+u_result RPlidarDriverUART::setMotorPWM(_u16 pwm)
 {
 	rp::hal::AutoLocker l(_lock);
 
@@ -2161,6 +2178,7 @@ u_result RPlidarDriverSerial::setMotorPWM(_u16 pwm)
     return RESULT_OK;
 }
 
+// --------
 
 RPlidarDriverTCP::RPlidarDriverTCP() 
 {

@@ -62,6 +62,7 @@ struct RplidarScanMode {
 enum {
     DRIVER_TYPE_SERIALPORT = 0x0,
     DRIVER_TYPE_TCP = 0x1,
+	DRIVER_TYPE_UART = 0x2	// Custom, direct UART controlled with DS1050 PWM motorctl support
 };
 
 class ChannelDevice
