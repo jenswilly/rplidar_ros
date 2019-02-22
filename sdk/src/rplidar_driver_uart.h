@@ -11,6 +11,7 @@ class RPlidarDriverUART : public RPlidarDriverSerial
 public:
 
     RPlidarDriverUART();
+	virtual ~RPlidarDriverUART();
     virtual u_result setMotorPWM(_u16 pwm);
     virtual u_result checkMotorCtrlSupport(bool & support, _u32 timeout = DEFAULT_TIMEOUT);
 
