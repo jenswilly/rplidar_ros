@@ -46,6 +46,7 @@
 #include "rplidar_driver_TCP.h"
 
 #include <algorithm>
+#include <i2c_service/I2CWriteRegisterByte.h>
 
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
@@ -2137,6 +2138,34 @@ u_result RPlidarDriverSerial::connect(const char * port_path, _u32 baudrate, _u3
 
     return RESULT_OK;
 }
+
+u_result RPlidarDriverSerial::setMotorPWM(_u16 pwm)
+{
+    u_result ans;
+    rplidar_payload_motor_pwm_t motor_pwm;
+    motor_pwm.pwm_value = pwm;
+
+    {
+        rp::hal::AutoLocker l(_lock);
+
+		i2c_client_ = nh_.serviceClient<i2c_service::I2CWriteRegisterByte>( "/i2c_write_byte" );
+		i2c_service::I2CWriteRegisterByte i2c_write_srv;
+		i2c_write_srv.request.address = 0x20;
+		i2c_write_srv.request.reg = 0x00;
+		i2c_write_srv.request.value = 0x00;
+		if( !i2c_client_.call( i2c_write_srv ))
+			ROS_ERROR( "Unable to send configuration request to MCP23017" );
+
+		/*
+        if (IS_FAIL(ans = _sendCommand(RPLIDAR_CMD_SET_MOTOR_PWM,(const _u8 *)&motor_pwm, sizeof(motor_pwm)))) {
+            return ans;
+        }
+		*/
+    }
+
+    return RESULT_OK;
+}
+
 
 RPlidarDriverTCP::RPlidarDriverTCP() 
 {

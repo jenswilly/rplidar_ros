@@ -37,6 +37,7 @@
 #include "std_srvs/Empty.h"
 #include "rplidar.h"
 
+
 #ifndef _countof
 #define _countof(_Array) (int)(sizeof(_Array) / sizeof(_Array[0]))
 #endif

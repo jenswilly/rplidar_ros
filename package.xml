@@ -1,20 +1,26 @@
 <?xml version="1.0"?>
 <package>
-  <name>rplidar_ros</name>
-  <version>1.9.0</version>
-  <description>The rplidar ros package, support rplidar A2/A1 and A3</description>
+	<name>rplidar_ros</name>
+	<version>1.9.1</version>
+	<description>Forked from https://github.com/robopeak/rplidar_ros by jenswilly to allow i2c-based PWM motor control.</description>
 
-  <maintainer email="ros@slamtec.com">Slamtec ROS Maintainer</maintainer>
-  <license>BSD</license>
+	<author email="ros@slamtec.com">Slamtec ROS Maintainer</maintainer>
+	<maintainer email="ros@slamtec.com">Slamtec ROS Maintainer</maintainer>
+	<maintainer email="jens@jwrobotics.com">Jens Willy Johannsen</maintainer>
 
-  <buildtool_depend>catkin</buildtool_depend>
-  <build_depend>roscpp</build_depend>
-  <build_depend>rosconsole</build_depend>
-  <build_depend>sensor_msgs</build_depend>
-  <build_depend>std_srvs</build_depend>
-  <run_depend>roscpp</run_depend>
-  <run_depend>rosconsole</run_depend>
-  <run_depend>sensor_msgs</run_depend>
-  <run_depend>std_srvs</run_depend>
+	<license>MIT</license>
 
+	<buildtool_depend>catkin</buildtool_depend>
+
+	<build_depend>roscpp</build_depend>
+	<build_depend>rosconsole</build_depend>
+	<build_depend>sensor_msgs</build_depend>
+	<build_depend>std_srvs</build_depend>
+	<build_depend>i2c_service</build_depend>
+
+	<run_depend>roscpp</run_depend>
+	<run_depend>rosconsole</run_depend>
+	<run_depend>sensor_msgs</run_depend>
+	<run_depend>std_srvs</run_depend>
+	<run_depend>i2c_service</run_depend>
 </package>
