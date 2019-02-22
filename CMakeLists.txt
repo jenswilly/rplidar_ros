@@ -13,6 +13,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   rosconsole
   sensor_msgs
+  i2c_service
 )
 
 include_directories(
@@ -21,7 +22,9 @@ include_directories(
   ${catkin_INCLUDE_DIRS}
 )
 
-catkin_package()
+catkin_package(
+  CATKIN_DEPENDS roscpp i2c_service
+)
 
 add_executable(rplidarNode src/node.cpp ${RPLIDAR_SDK_SRC})
 target_link_libraries(rplidarNode ${catkin_LIBRARIES})

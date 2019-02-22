@@ -107,7 +107,6 @@ public:
 private:
 	ros::NodeHandle nh_;
 	ros::ServiceClient i2c_client_;
-
 };
 
 }}}

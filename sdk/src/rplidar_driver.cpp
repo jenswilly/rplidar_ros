@@ -46,7 +46,8 @@
 #include "rplidar_driver_TCP.h"
 
 #include <algorithm>
-#include <i2c_service/I2CWriteRegisterByte.h>
+#include <i2c_service/I2CWriteByte.h>
+
 
 #ifndef min
 #define min(a,b)            (((a) < (b)) ? (a) : (b))
@@ -2098,6 +2099,7 @@ void RPlidarDriverImplCommon::_disableDataGrabbing()
 RPlidarDriverSerial::RPlidarDriverSerial() 
 {
     _chanDev = new SerialChannelDevice();
+    i2c_client_ = nh_.serviceClient<i2c_service::I2CWriteByte>( "/i2c_write_byte_data" );
 }
 
 RPlidarDriverSerial::~RPlidarDriverSerial()
@@ -2141,27 +2143,20 @@ u_result RPlidarDriverSerial::connect(const char * port_path, _u32 baudrate, _u3
 
 u_result RPlidarDriverSerial::setMotorPWM(_u16 pwm)
 {
-    u_result ans;
-    rplidar_payload_motor_pwm_t motor_pwm;
-    motor_pwm.pwm_value = pwm;
+	rp::hal::AutoLocker l(_lock);
 
-    {
-        rp::hal::AutoLocker l(_lock);
+	// Convert from 16 bit to 5 bit (with some typecasting to prevent premature truncating) for the DS1050
+	double pwmRatio = (double)pwm / MAX_MOTOR_PWM;
+	uint8_t pwm5bit = pwmRatio * (double)0x1F;
 
-		i2c_client_ = nh_.serviceClient<i2c_service::I2CWriteRegisterByte>( "/i2c_write_byte" );
-		i2c_service::I2CWriteRegisterByte i2c_write_srv;
-		i2c_write_srv.request.address = 0x20;
-		i2c_write_srv.request.reg = 0x00;
-		i2c_write_srv.request.value = 0x00;
-		if( !i2c_client_.call( i2c_write_srv ))
-			ROS_ERROR( "Unable to send configuration request to MCP23017" );
-
-		/*
-        if (IS_FAIL(ans = _sendCommand(RPLIDAR_CMD_SET_MOTOR_PWM,(const _u8 *)&motor_pwm, sizeof(motor_pwm)))) {
-            return ans;
-        }
-		*/
-    }
+	i2c_service::I2CWriteByte i2c_write_srv;
+	i2c_write_srv.request.address = 0x28;	// Address is 0101 000x. Shifted one right = 0010 1000 = 0x28
+	i2c_write_srv.request.value = pwm5bit;
+	if( !i2c_client_.call( i2c_write_srv ))
+	{
+		ROS_ERROR( "Unable to send configuration request to MCP23017" );
+		return RESULT_OPERATION_FAIL;
+	}
 
     return RESULT_OK;
 }

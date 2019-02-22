@@ -4,7 +4,7 @@
 	<version>1.9.1</version>
 	<description>Forked from https://github.com/robopeak/rplidar_ros by jenswilly to allow i2c-based PWM motor control.</description>
 
-	<author email="ros@slamtec.com">Slamtec ROS Maintainer</maintainer>
+	<author email="ros@slamtec.com">Slamtec ROS Maintainer</author>
 	<maintainer email="ros@slamtec.com">Slamtec ROS Maintainer</maintainer>
 	<maintainer email="jens@jwrobotics.com">Jens Willy Johannsen</maintainer>
 
